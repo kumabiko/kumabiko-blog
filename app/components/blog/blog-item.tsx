@@ -1,13 +1,13 @@
 "use client";
 
 import { format } from "date-fns";
-import type { BlogListType } from "../../../utils/blog.types";
+import type { BlogItemType } from "../../../utils/blog.types";
 
 import Link from "next/link";
 import Image from "next/image";
 
 // ブログアイテム
-const BlogItem = (blog: BlogListType) => {
+const BlogItem = (blog: BlogItemType) => {
   const MAX_LENGTH = 55;
   let content = blog.content.replace(/\r?\n/g, "");
 

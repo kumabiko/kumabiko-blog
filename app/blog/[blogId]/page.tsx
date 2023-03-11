@@ -17,30 +17,36 @@ const BlogDetailPage = async ({ params }: PageProps) => {
   // ブログ詳細取得
   const { data: blogData } = await supabase
     .from("blogs")
-    .select("*")
+    .select(
+      "*, comments(id, content, created_at, profiles(name, avatar_url), likes(user_id))"
+    ) // コメント取得
     .eq("id", params.blogId)
-    .single();
+    .returns<BlogListType>() // 型を指定
+    .maybeSingle();
+
+  const typedBlogData = blogData as BlogListType | null;
 
   // ブログが存在しない場合
-  if (!blogData) return notFound();
+  if (!typedBlogData) return notFound();
 
   // プロフィール取得
   const { data: profileData } = await supabase
     .from("profiles")
     .select()
-    .eq("id", blogData.user_id)
+    .eq("id", typedBlogData.user_id)
     .single();
 
   // 表示ブログ詳細作成
   const blog: BlogListType = {
-    id: blogData.id,
-    created_at: blogData.created_at,
-    title: blogData.title,
-    content: blogData.content,
-    image_url: blogData.image_url,
-    user_id: blogData.user_id,
+    id: typedBlogData.id,
+    created_at: typedBlogData.created_at,
+    title: typedBlogData.title,
+    content: typedBlogData.content,
+    image_url: typedBlogData.image_url,
+    user_id: typedBlogData.user_id,
     name: profileData!.name,
     avatar_url: profileData!.avatar_url,
+    comments: typedBlogData.comments,
   };
 
   return <BlogDetail blog={blog} />;
