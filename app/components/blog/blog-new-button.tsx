@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 
 import Link from "next/link";
 import useStore from "../../../store";
+import { Button } from "@mantine/core";
+import { PlusIcon } from "@heroicons/react/24/solid";
 
 // 新規投稿ボタン
 const BlogNewButton = () => {
@@ -16,9 +18,12 @@ const BlogNewButton = () => {
       return (
         <div className="mb-5 flex justify-end">
           <Link href="blog/new">
-            <div className="text-white bg-yellow-500 hover:brightness-110 rounded py-1 px-8">
+            <Button
+              color="dark"
+              leftIcon={<PlusIcon className="h-5 w-5 text-white" />}
+            >
               新規投稿
-            </div>
+            </Button>
           </Link>
         </div>
       );
